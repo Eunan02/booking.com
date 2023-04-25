@@ -6,7 +6,7 @@ import usersRoute from "./routes/users.js"
 import hotelsRoute from "./routes/hotels.js"
 import roomsRoute from "./routes/rooms.js"
 import cookieParser from "cookie-parser"
-
+const port = process.env.PORT || 5000;
 const app=express()
 dotenv.config()
 
@@ -52,3 +52,9 @@ app.listen(8800,() => {
     connect()
     console.log("connected to backend!!")
 })
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+    app.use(express.static("client/build"));
+    app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+    });
+   }
